@@ -11,7 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('calon_mahasiswas', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Terhubung ke tabel users
+            $table->string('nama_lengkap');
+            $table->string('status_pendaftaran')->default('Menunggu Verifikasi'); // Sesuai use case
+            $table->timestamps();
+        });
     }
 
     /**
