@@ -15,6 +15,8 @@
     <td>{{ $row->npm }}</td>
     <td>{{ $row->jenis_kelamin }}</td>
     <td>{{ $row->alamat }}</td>
+    <td></td>
+    <td></td>
     </tr>
     @endforeach
 </table>
