@@ -14,7 +14,7 @@ class AuthController extends Controller
 
     public function showRegisterForm()
     {
-        return view ('pendaftaran');
+        return view ('auth.pendaftaran');
     }
 
     public function register(Request $request)
@@ -32,12 +32,12 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password),
                 'role' => 'mahasiswa',
             ]);
-            Calon_Mahasiswa::create([
-                'user_id' => $user->id,
-                'nama_lengkap' => $request->name,
-                'status_pendaftaran' => 'Baru Mendaftar',
-                'role' => 'mahasiswa'
-            ]);
+            // Calon_Mahasiswa::create([
+            //     'user_id' => $user->id,
+            //     'nama_lengkap' => $request->name,
+            //     'status_pendaftaran' => 'Baru Mendaftar',
+            //     'role' => 'mahasiswa'
+            // ]);
             Auth::login($user);
         });
         return redirect('/cekstatusakun')->with('success', 'Registrasi berhasil! Silakan cek status akun Anda.');
