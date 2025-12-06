@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
 
@@ -40,10 +40,48 @@ class AuthController extends Controller
             // ]);
             Auth::login($user);
         });
-        return redirect('/cekstatusakun')->with('success', 'Registrasi berhasil! Silakan cek status akun Anda.');
+        return redirect('/dashboard')->with('success', 'Registrasi berhasil! Silakan cek status akun Anda.');
     }
     public function statusAkun()
     {
-        return view('cekstatusakun');
+        return view('dashboard');
     }
+
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    public function login(Request $request)
+    {
+        // 1. Validasi input
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        // 2. Coba autentikasi
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            
+            $request->session()->regenerate();
+
+            // 3. Cek Role (Opsional, tapi disarankan jika Anda memiliki Admin/Mahasiswa)
+            if (Auth::user()->role !== 'mahasiswa') {
+                 // Jika yang login bukan mahasiswa, logout dan beri pesan error
+                 Auth::logout();
+                 throw ValidationException::withMessages([
+                    'email' => ['Akses ditolak untuk role ini.'],
+                 ]);
+            }
+            
+            // 4. Redirect ke dashboard jika berhasil
+            return redirect()->intended('/dashboard')->with('success', 'Selamat datang! Anda berhasil login.');
+        }
+
+        // 5. Kembali ke form login dengan error jika gagal
+        throw ValidationException::withMessages([
+            'email' => ['Email atau password yang Anda masukkan tidak valid.'],
+        ]);
+    }
+
 }

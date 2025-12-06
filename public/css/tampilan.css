@@ -1,5 +1,5 @@
 
-body {
+.body {
             
             background: url('https://i.pinimg.com/736x/8a/91/72/8a91724388cc059649ebf4985dfb50c2.jpg') no-repeat center center fixed;
             background-size: cover;
@@ -168,3 +168,74 @@ body {
 .toggle-password {
     cursor: pointer;
 }
+
+
+        .body1 {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5; /* Latar belakang lebih lembut */
+        }
+        .status-card {
+            border-radius: 15px; /* Sudut melengkung */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Bayangan lembut */
+            border: none;
+            overflow: hidden;
+        }
+        .header-success {
+            background: linear-gradient(135deg, #1d976c, #93f9b9); /* Gradien Hijau */
+            color: white;
+            padding: 20px 0;
+        }
+        .status-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        .status-badge {
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 50px;
+        }
+        .progress-container {
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        .progress-bar {
+            border-radius: 50px;
+            height: 15px;
+            background-color: #ffc107; 
+        }
+
+        .login-card {
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 15px; 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); 
+            border: none;
+        }
+        .card-title {
+            color: #007bff; 
+            font-weight: 700;
+        }
+        .input-group-text {
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
+        .btn-login {
+            width: 100%;
+            border-radius: 25px;
+            padding: 12px;
+            font-weight: bold;
+            color: white;
+            border: none;
+           
+            background: linear-gradient(to right, #91a7ff, #72f7d6);
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .btn-login:hover {
+            background-color: #1e7e34;
+             border-color: #1e7e34;
+        }
+
+        
+         
