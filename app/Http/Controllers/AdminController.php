@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Calon_Mahasiswa;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -11,10 +12,12 @@ class AdminController extends Controller
     {
        
         $users = User::where('role', 'mahasiswa')->paginate(10);
+        
 
         return view('admin.akun', compact('users'));
     }
 
+    
     
     public function validasiUser($id)
     {

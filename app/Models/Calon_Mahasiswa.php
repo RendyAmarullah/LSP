@@ -12,6 +12,7 @@ class Calon_Mahasiswa extends Model
     protected $table = 'calon_mahasiswas';
 
     protected $fillable = [
+        'user_id',
         'nama_lengkap',
         'email',
         'nomor_hp',

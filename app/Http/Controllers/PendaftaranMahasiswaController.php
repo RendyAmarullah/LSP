@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Calon_Mahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PendaftaranMahasiswaController extends Controller
 {
@@ -18,6 +19,7 @@ class PendaftaranMahasiswaController extends Controller
     {
         // 1. Validasi Input
         $request->validate([
+            
             'nama_lengkap' => 'required|string|max:255',
             'email' => 'required|email|unique:calon_mahasiswas,email',
             'nomor_hp' => 'required|numeric',
@@ -38,6 +40,7 @@ class PendaftaranMahasiswaController extends Controller
 
         // 3. Simpan ke Database
         Calon_Mahasiswa::create([
+            'user_id' => Auth::id(),
             'nama_lengkap' => $request->nama_lengkap,
             'email' => $request->email,
             'nomor_hp' => $request->nomor_hp,

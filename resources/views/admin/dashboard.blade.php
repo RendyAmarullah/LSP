@@ -33,12 +33,12 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link nav-link-custom" href="{{ url('/admin/pengumuman') }}">
-                    <i class="fas fa-wallet me-2"></i> Pengumuman
+                    <i class="fas fa-bullhorn me-2"></i> Pengumuman
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-custom" href="{{ url('/jadwal-test') }}">
-                    <i class="fas fa-calendar-alt me-2"></i> Jadwal Tes
+                <a class="nav-link nav-link-custom" href="{{ url('/admin/calonmahasiswa') }}">
+                    <i class="fas fa-users me-2"></i> Data Pendaftar
                 </a>
             </li>
             <li class="nav-item">

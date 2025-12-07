@@ -25,7 +25,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-custom" href="{{ url('/lengkapi-profil') }}">
+                <a class="nav-link nav-link-custom" href="{{ url('/profile') }}">
                     <i class="fas fa-address-card me-2"></i> Data Profil
                 </a>
             </li>
@@ -35,7 +35,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-custom" href="{{ url('/jadwal-test') }}">
+                <a class="nav-link nav-link-custom" href="{{ url('/') }}">
                     <i class="fas fa-calendar-alt me-2"></i> Jadwal Tes
                 </a>
             </li>

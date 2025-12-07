@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('calon_mahasiswas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('nama_lengkap');
             $table->string('email')->unique();
             $table->string('nomor_hp');
@@ -29,5 +30,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('calon_mahasiswa');
+        // Schema::table('calon_mahasiswas', function (Blueprint $table) {
+        //     $table->dropForeign(['user_id']);
+        //     $table->dropColumn('user_id');
+        // });
     }
     };

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biodata Saya</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}"> 
+</head>
+<body class="bg-light">
+
+<div class="d-flex">
+    
+    <div class="sidebar col-lg-3">
+        <div class="sidebar-header">
+            <i class="fas fa-graduation-cap university-icon mb-2" style="font-size: 2rem;"></i>
+            <h4>Portal Mahasiswa</h4>
+        </div>
+
+        <ul class="nav flex-column px-3">
+            <li class="nav-item">
+                <a class="nav-link nav-link-custom" href="{{ url('/dashboard') }}">
+                    <i class="fas fa-chart-line me-2"></i> Dashboard
+                </a>
+            </li>
+            {{-- Menu Aktif di sini --}}
+            <li class="nav-item">
+                <a class="nav-link nav-link-custom active" href="{{ url('/lengkapi-profil') }}">
+                    <i class="fas fa-address-card me-2"></i> Data Profil
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-custom" href="{{ url('/pembayaran') }}">
+                    <i class="fas fa-wallet me-2"></i> Pembayaran
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-custom" href="{{ url('/jadwal-test') }}">
+                    <i class="fas fa-calendar-alt me-2"></i> Jadwal Tes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-custom" href="{{ url('/bantuan') }}">
+                    <i class="fas fa-question-circle me-2"></i> Bantuan
+                </a>
+            </li>
+        </ul>
+
+        <div class="px-3">
+            <form action="{{ url('/logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-outline-danger btn-logout w-100">
+                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="main-content col-lg-9 p-4">
+        <div class="container-fluid">
+            
+            <div class="welcome-header d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="display-6 fw-bold text-dark">Profil Saya</h1>
+                    <p class="text-muted">Berikut adalah data diri yang telah Anda daftarkan.</p>
+                </div>
+                <a href="{{ url('/dashboard') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i> Kembali
+                </a>
+            </div>
+
+            <div class="row">
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm border-0 text-center p-3 h-100">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                @if($data->foto_diri)
+                                    <img src="{{ asset('storage/' . $data->foto_diri) }}" class="img-thumbnail rounded-circle shadow-sm" 
+                                         style="width: 200px; height: 200px; object-fit: cover;" alt="Foto Profil">
+                                @else
+                                    <img src="https://via.placeholder.com/200?text=No+Photo" class="img-thumbnail rounded-circle shadow-sm" 
+                                         alt="No Photo">
+                                @endif
+                            </div>
+                            
+                            <h4 class="fw-bold text-dark">{{ $data->nama_lengkap }}</h4>
+                            <p class="text-muted mb-1">{{ $data->email }}</p>
+                            <span class="badge bg-primary px-3 py-2 mt-2">{{ $data->jurusan_pilihan }}</span>
+                            
+                            <hr class="my-4">
+                            
+                            {{-- Tombol Edit (Opsional) --}}
+                            {{-- <a href="#" class="btn btn-warning w-100 fw-bold"><i class="fas fa-edit me-2"></i> Edit Profil</a> --}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-user-check me-2"></i> Detail Informasi</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            
+                            <div class="table-responsive">
+                                <table class="table table-borderless align-middle">
+                                    <tbody>
+                                        <tr>
+                                            <td width="35%" class="text-secondary fw-bold">Nama Lengkap</td>
+                                            <td width="5%">:</td>
+                                            <td class="fw-bold text-dark">{{ $data->nama_lengkap }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-secondary fw-bold">Tempat, Tanggal Lahir</td>
+                                            <td>:</td>
+                                            <td>{{ $data->tempat_lahir }}, {{ \Carbon\Carbon::parse($data->tanggal_lahir)->translatedFormat('d F Y') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-secondary fw-bold">Nomor WhatsApp</td>
+                                            <td>:</td>
+                                            <td>{{ $data->nomor_hp }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-secondary fw-bold">Email Terdaftar</td>
+                                            <td>:</td>
+                                            <td>{{ $data->email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-secondary fw-bold">Asal Sekolah</td>
+                                            <td>:</td>
+                                            <td>{{ $data->asal_sekolah }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-secondary fw-bold">Jurusan Pilihan</td>
+                                            <td>:</td>
+                                            <td class="text-primary fw-bold">{{ $data->jurusan_pilihan }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-secondary fw-bold">Alamat Lengkap</td>
+                                            <td>:</td>
+                                            <td>{{ $data->alamat }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-secondary fw-bold">Tanggal Mendaftar</td>
+                                            <td>:</td>
+                                            <td>{{ $data->created_at->format('d/m/Y H:i') }} WIB</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {{-- Info Tambahan --}}
+                            <div class="alert alert-info d-flex align-items-center mt-3" role="alert">
+                                <i class="fas fa-info-circle me-3 fa-lg"></i>
+                                <div>
+                                    Pastikan data di atas sudah benar. Jika terdapat kesalahan, silakan hubungi bagian administrasi kampus.
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
