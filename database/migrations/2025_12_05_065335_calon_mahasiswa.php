@@ -13,18 +13,21 @@ return new class extends Migration
     {
         Schema::create('calon_mahasiswas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Terhubung ke tabel users
             $table->string('nama_lengkap');
-            $table->string('status_pendaftaran')->default('Menunggu Verifikasi'); // Sesuai use case
+            $table->string('email')->unique();
+            $table->string('nomor_hp');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->text('alamat');
+            $table->string('asal_sekolah');
+            $table->string('jurusan_pilihan'); // Pilihan Jurusan
+            $table->string('foto_diri')->nullable(); // Path Gambar
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('calon_mahasiswa');
     }
-};
+    };

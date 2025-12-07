@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Calon_Mahasiswa;
+use App\Models\Pengumuman;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +45,21 @@ class AuthController extends Controller
     }
     public function statusAkun()
     {
-        return view('dashboard');
+        // Ambil pengumuman terbaru
+        $user = Auth::user();
+        $status= $user->status;
+        
+        $pengumuman = Pengumuman::latest()->get(); 
+
+        // Kirim variabel $pengumuman ke view dashboard
+        return view('dashboard', compact('pengumuman','status')); 
+    }
+
+    public function pengumuman()
+    {
+        $pengumuman = Pengumuman::latest()->get();
+
+        return view('admin.dashboard', compact('pengumuman'));
     }
 
     public function showLoginForm()
@@ -64,24 +79,30 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             
             $request->session()->regenerate();
+            $user = Auth::user(); // Ambil data user yang sedang login
 
-            // 3. Cek Role (Opsional, tapi disarankan jika Anda memiliki Admin/Mahasiswa)
-            if (Auth::user()->role !== 'mahasiswa') {
-                 // Jika yang login bukan mahasiswa, logout dan beri pesan error
-                 Auth::logout();
-                 throw ValidationException::withMessages([
-                    'email' => ['Akses ditolak untuk role ini.'],
-                 ]);
-            }
+            // 3. Cek Role & Redirect Sesuai Role
+            if ($user->role === 'admin') {
+                // Jika Admin, arahkan ke URL dashboard admin
+                return redirect()->intended('/admin/dashboard')->with('success', 'Selamat datang Admin!');
+            } 
             
-            // 4. Redirect ke dashboard jika berhasil
-            return redirect()->intended('/dashboard')->with('success', 'Selamat datang! Anda berhasil login.');
+            if ($user->role === 'mahasiswa') {
+                // Jika Mahasiswa, arahkan ke URL dashboard biasa
+                return redirect()->intended('/dashboard')->with('success', 'Selamat datang Mahasiswa!');
+            }
+
+            // Jika role tidak dikenali, paksa logout
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => ['Akun Anda tidak memiliki hak akses yang valid.'],
+            ]);
         }
 
-        // 5. Kembali ke form login dengan error jika gagal
+        // 4. Kembali ke form login dengan error jika password salah
         throw ValidationException::withMessages([
             'email' => ['Email atau password yang Anda masukkan tidak valid.'],
         ]);
     }
-
+        
 }

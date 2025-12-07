@@ -9,10 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        //
-    }
+    public function up()
+{
+    Schema::create('pengumuman', function (Blueprint $table) {
+        $table->id();
+        $table->string('judul');
+        $table->text('isi');
+        $table->string('gambar')->nullable();
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.

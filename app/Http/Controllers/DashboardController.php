@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pengumuman;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -13,5 +15,16 @@ class DashboardController extends Controller
         return view('dashboard');
     }
     
+    public function index()
+{
     
+    $user = Auth::user();
+    
+    
+    $status_akun = $user->status; 
+    
+    $pengumuman = Pengumuman::all();
+
+    return view('dashboard', compact('pengumuman', 'status'));
+}
 }
