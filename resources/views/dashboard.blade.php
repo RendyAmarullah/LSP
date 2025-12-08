@@ -107,6 +107,9 @@
                                 <div>
                                     <h5 class="card-title fw-bold text-danger">Akun Ditolak</h5>
                                     <p class="card-text text-muted mb-0">Mohon maaf, akun anda ditolak. <br><small class="text-secondary">Silakan perbaiki data profil.</small></p>
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#editAkunModal">
+                                        <i class="fas fa-user-edit me-1"></i> Perbaiki Data Akun
+                                    </button>
                                 </div>
                             @else
                                 <i class="fas fa-clock status-icon text-warning" style="font-size: 2.5rem; margin-right: 15px;"></i> 
@@ -245,6 +248,38 @@
     </div>
 </div>
 @endforeach
+{{-- MODAL EDIT DATA AKUN --}}
+<div class="modal fade" id="editAkunModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold">Perbaiki Data Akun</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('akun.update') }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label fw-bold">Nama Lengkap</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ Auth::user()->name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-bold">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ Auth::user()->email }}" required>
+                    </div>
+                    <div class="alert alert-warning small">
+                        <i class="fas fa-info-circle me-1"></i> Setelah disimpan, status akun akan kembali menjadi <strong>Menunggu Verifikasi</strong>.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

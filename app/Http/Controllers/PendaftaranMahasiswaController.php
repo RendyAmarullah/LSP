@@ -86,8 +86,13 @@ class PendaftaranMahasiswaController extends Controller
 
 public function update(Request $request)
 {
-    $camaba = Calon_Mahasiswa::where('user_id', Auth::id())->first();
+    $user = Auth::user();
+    $camaba = Calon_Mahasiswa::where('user_id', $user->id)->first();
 
+    if (!$camaba) {
+        return redirect()->back()->with('error', 'Data tidak ditemukan.');
+    }
+    
     // Validasi input (Sama seperti store, tapi foto boleh kosong/nullable)
     $request->validate([
         'nama_lengkap' => 'required|string|max:255',
@@ -102,7 +107,8 @@ public function update(Request $request)
         'jurusan_pilihan' => 'required|string',
         'foto_diri'    => 'nullable|image|max:2048', // Foto opsional saat edit
     ]);
-
+    
+    
     // Handle File Foto (Jika ada upload baru)
     if ($request->hasFile('foto_diri')) {
         // (Opsional) Hapus foto lama di storage jika perlu
@@ -113,6 +119,7 @@ public function update(Request $request)
     // Ambil data prodi baru (jika user ganti jurusan)
     $prodi =Prodi::where('nama_prodi', $request->jurusan_pilihan)->first();
 
+    
     // Update Data
     $camaba->update([
         'nama_lengkap' => $request->nama_lengkap,
@@ -131,7 +138,7 @@ public function update(Request $request)
         
         'status'       => 'pending' 
     ]);
-
+    
     return redirect('/profile')->with('success', 'Data berhasil diperbarui! Menunggu verifikasi ulang.');
 }
 }

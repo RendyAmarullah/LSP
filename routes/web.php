@@ -72,6 +72,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::put('/akun/update', [DashboardController::class, 'updateAkun'])->name('akun.update');
     Route::get('/dashboard', [AuthController::class, 'statusAkun']); 
     Route::get('/admin/dashboard', [AuthController::class, 'pengumuman']);
     Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
