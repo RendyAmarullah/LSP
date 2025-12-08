@@ -96,13 +96,13 @@
                         </div>
                         
                         <div class="card-body d-flex align-items-center">
-                            @if(Auth::user()->status == 'tervalidasi')
+                            @if($status == 'tervalidasi')
                                 <i class="fas fa-check-circle status-icon text-success" style="font-size: 2.5rem; margin-right: 15px;"></i> 
                                 <div>
                                     <h5 class="card-title fw-bold text-success">Akun Tervalidasi</h5>
                                     <p class="card-text text-muted mb-0">Selamat! Data Anda telah diverifikasi oleh admin.</p>
                                 </div>
-                            @elseif(Auth::user()->status == 'ditolak')
+                            @elseif($status == 'ditolak')
                                 <i class="fas fa-times-circle status-icon text-danger" style="font-size: 2.5rem; margin-right: 15px;"></i> 
                                 <div>
                                     <h5 class="card-title fw-bold text-danger">Akun Ditolak</h5>
@@ -127,14 +127,14 @@
                     <div class="card status-card mb-4 shadow-sm border-0">
                         <div class="card-body">
                             <h5 class="fw-bold text-dark mb-3">Langkah Terakhir</h5>
-                            @if(Auth::user()->status == 'tervalidasi')
+                            @if($status == 'tervalidasi')
                                 <div class="alert alert-success border-0 bg-success-subtle text-success mb-3">
                                     <i class="fas fa-check-circle me-2"></i> Akun Anda telah tervalidasi. Silakan lanjutkan.
                                 </div>
                                 <a href="{{ url('/pendaftaranmahasiswa') }}" class="btn btn-primary w-100 py-2 fw-bold">
                                     <i class="fas fa-user-check me-2"></i> Mendaftar Sebagai Mahasiswa
                                 </a>
-                            @elseif(Auth::user()->status == 'ditolak')
+                            @elseif($status == 'ditolak')
                                 <div class="alert alert-danger border-0 bg-danger-subtle text-danger mb-3">
                                     <i class="fas fa-ban me-2"></i> Akun Anda ditolak.
                                 </div>
