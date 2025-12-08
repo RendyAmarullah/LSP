@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biodata Saya</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}"> 
 </head>
 <body class="bg-light">
 
 <div class="d-flex">
     
+    {{-- SIDEBAR --}}
     <div class="sidebar col-lg-3">
         <div class="sidebar-header">
             <i class="fas fa-graduation-cap university-icon mb-2" style="font-size: 2rem;"></i>
@@ -24,6 +27,7 @@
                     <i class="fas fa-chart-line me-2"></i> Dashboard
                 </a>
             </li>
+            {{-- Menu Aktif --}}
             <li class="nav-item">
                 <a class="nav-link nav-link-custom active" href="{{ url('/lengkapi-profil') }}">
                     <i class="fas fa-address-card me-2"></i> Data Profil
@@ -32,16 +36,6 @@
             <li class="nav-item">
                 <a class="nav-link nav-link-custom" href="{{ url('/pembayaran') }}">
                     <i class="fas fa-wallet me-2"></i> Pembayaran
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-custom" href="{{ url('/jadwal-test') }}">
-                    <i class="fas fa-calendar-alt me-2"></i> Jadwal Tes
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-custom" href="{{ url('/bantuan') }}">
-                    <i class="fas fa-question-circle me-2"></i> Bantuan
                 </a>
             </li>
         </ul>
@@ -56,6 +50,7 @@
         </div>
     </div>
 
+    {{-- KONTEN UTAMA --}}
     <div class="main-content col-lg-9 p-4">
         <div class="container-fluid">
             
@@ -70,61 +65,73 @@
             </div>
 
             {{-- ================================================= --}}
-            {{-- STATUS PENDAFTARAN (DARI TABEL CALON MAHASISWA)   --}}
+            {{-- PEMBERITAHUAN STATUS (BAGIAN BARU)                --}}
             {{-- ================================================= --}}
             <div class="row mb-4">
                 <div class="col-12">
                     
-                    {{-- 
-                        LOGIKA BARU:
-                        1. Auth::user()->calonMahasiswa  -> Mengambil data dari tabel calon_mahasiswas
-                        2. Tanda tanya (?)               -> Mencegah error jika data belum ada (Null Safe)
-                        3. ->status                      -> Mengambil kolom 'status'
-                    --}}
-
-                    @if(Auth::user()->calonMahasiswa?->status == 'tervalidasi')
-                        
-                        {{-- STATUS: SUDAH DIVALIDASI --}}
+                    {{-- 1. JIKA STATUS TERVALIDASI --}}
+                    @if($data->status == 'tervalidasi')
                         <div class="alert alert-success border-0 shadow-sm d-flex align-items-center p-4">
-                            <i class="fas fa-check-circle fa-3x me-4 text-success"></i>
+                            <div class="me-4 text-center">
+                                <i class="fas fa-check-circle fa-3x text-success"></i>
+                            </div>
                             <div class="flex-grow-1">
                                 <h4 class="alert-heading fw-bold mb-1">Status: Tervalidasi</h4>
-                                <p class="mb-0 fs-5">Data Anda telah valid. <strong>Silahkan lanjutkan ke pembayaran.</strong></p>
+                                <p class="mb-0 fs-5">
+                                    Selamat! Data pendaftaran Anda telah valid. 
+                                    Silakan lanjutkan ke menu <strong>Pembayaran</strong>.
+                                </p>
                             </div>
-                            <a href="{{ url('/pembayaran') }}" class="btn btn-light fw-bold text-success shadow-sm px-4 py-2">
-                                <i class="fas fa-wallet me-2"></i> Bayar Sekarang
-                            </a>
+                            <div class="ms-3">
+                                <a href="{{ url('/pembayaran') }}" class="btn btn-light text-success fw-bold shadow-sm px-4 py-2">
+                                    <i class="fas fa-wallet me-2"></i> Bayar Sekarang
+                                </a>
+                            </div>
                         </div>
 
-                    @elseif(Auth::user()->calonMahasiswa?->status == 'ditolak')
-                        
-                        {{-- STATUS: DITOLAK --}}
+                    {{-- 2. JIKA STATUS DITOLAK --}}
+                    @elseif($data->status == 'ditolak')
                         <div class="alert alert-danger border-0 shadow-sm d-flex align-items-center p-4">
-                            <i class="fas fa-times-circle fa-3x me-4 text-danger"></i>
-                            <div>
+                            <div class="me-4 text-center">
+                                <i class="fas fa-times-circle fa-3x text-danger"></i>
+                            </div>
+                            <div class="flex-grow-1">
                                 <h4 class="alert-heading fw-bold mb-1">Status: Ditolak</h4>
-                                <p class="mb-0">Mohon maaf, pendaftaran Anda ditolak. Silakan perbaiki data Anda.</p>
+                                <p class="mb-0">
+                                    Mohon maaf, data pendaftaran Anda ditolak karena tidak memenuhi syarat atau terdapat kesalahan data. 
+                                    <br><strong>Silakan perbaiki data Anda untuk diverifikasi ulang.</strong>
+                                </p>
+                            </div>
+                            <div class="ms-3">
+                                <a href="{{ route('pendaftaranmahasiswa.edit') }}" class="btn btn-light text-danger fw-bold shadow-sm px-4 py-2">
+                                    <i class="fas fa-pencil-alt me-2"></i> Edit Data
+                                </a>
                             </div>
                         </div>
 
+                    {{-- 3. JIKA STATUS PENDING (Menunggu) --}}
                     @else
-                        
-                        {{-- STATUS: MENUNGGU VERIFIKASI (DEFAULT) --}}
                         <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center p-4">
-                            <i class="fas fa-hourglass-half fa-3x me-4 text-warning"></i>
+                            <div class="me-4 text-center">
+                                <i class="fas fa-clock fa-3x text-warning"></i>
+                            </div>
                             <div>
                                 <h4 class="alert-heading fw-bold mb-1">Status: Menunggu Verifikasi</h4>
-                                <p class="mb-0 fs-5">Data Anda sudah kami terima. <strong>Pendaftaran sedang di verifikasi</strong> oleh admin.</p>
+                                <p class="mb-0">
+                                    Data Anda sedang dalam proses pemeriksaan oleh admin. Mohon ditunggu.
+                                </p>
                             </div>
                         </div>
-
                     @endif
 
                 </div>
             </div>
-            
-            {{-- Bagian Tampilan Data Profil (Tidak Berubah) --}}
+            {{-- ================================================= --}}
+
+
             <div class="row">
+                
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm border-0 text-center p-3 h-100">
                         <div class="card-body">
@@ -141,7 +148,10 @@
                             <h4 class="fw-bold text-dark">{{ $data->nama_lengkap }}</h4>
                             <p class="text-muted mb-1">{{ $data->email }}</p>
                             
+                            {{-- Tampilkan Jurusan --}}
                             <span class="badge bg-primary px-3 py-2 mt-2">{{ $data->jurusan_pilihan }}</span>
+                            
+                            {{-- Tampilkan Fakultas --}}
                             <p class="text-secondary small mt-2 fw-bold">{{ $data->fakultas }}</p>
                             
                             <hr class="my-4">
@@ -151,10 +161,18 @@
 
                 <div class="col-md-8">
                     <div class="card shadow-sm border-0">
-                        <div class="card-header bg-white py-3">
+                        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
                             <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-user-check me-2"></i> Detail Informasi</h5>
+                            
+                            {{-- Tombol edit kecil juga muncul jika status pending (opsional) --}}
+                            @if($data->status == 'pending')
+                                <a href="{{ route('pendaftaranmahasiswa.edit') }}" class="btn btn-sm btn-outline-warning">
+                                    <i class="fas fa-pencil-alt me-1"></i> Edit
+                                </a>
+                            @endif
                         </div>
                         <div class="card-body p-4">
+                            
                             <div class="table-responsive">
                                 <table class="table table-borderless align-middle">
                                     <tbody>
@@ -163,16 +181,19 @@
                                             <td width="5%">:</td>
                                             <td class="fw-bold text-dark">{{ $data->nama_lengkap }}</td>
                                         </tr>
+                                        
                                         <tr>
                                             <td class="text-secondary fw-bold">Jenis Kelamin</td>
                                             <td>:</td>
                                             <td>{{ $data->jenis_kelamin }}</td>
                                         </tr>
+
                                         <tr>
                                             <td class="text-secondary fw-bold">Agama</td>
                                             <td>:</td>
                                             <td>{{ $data->agama }}</td>
                                         </tr>
+
                                         <tr>
                                             <td class="text-secondary fw-bold">Tempat, Tanggal Lahir</td>
                                             <td>:</td>
@@ -193,11 +214,13 @@
                                             <td>:</td>
                                             <td>{{ $data->asal_sekolah }}</td>
                                         </tr>
+
                                         <tr>
                                             <td class="text-secondary fw-bold">Fakultas</td>
                                             <td>:</td>
                                             <td>{{ $data->fakultas }}</td>
                                         </tr>
+
                                         <tr>
                                             <td class="text-secondary fw-bold">Jurusan Pilihan</td>
                                             <td>:</td>
@@ -216,15 +239,18 @@
                                     </tbody>
                                 </table>
                             </div>
+
                             <div class="alert alert-info d-flex align-items-center mt-3" role="alert">
                                 <i class="fas fa-info-circle me-3 fa-lg"></i>
                                 <div>
                                     Pastikan data di atas sudah benar. Jika terdapat kesalahan, silakan hubungi bagian administrasi kampus.
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

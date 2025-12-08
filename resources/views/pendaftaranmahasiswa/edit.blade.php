@@ -39,64 +39,65 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('pendaftaranmahasiswa.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('pendaftaranmahasiswa.update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            
+                            @method('PUT')
+
                             {{-- BAGIAN DATA PRIBADI (TIDAK BERUBAH) --}}
                             <h5 class="text-primary fw-bold mb-3"><i class="fas fa-user me-2"></i>Data Pribadi</h5>
                             
                             <div class="mb-3">
                                 <label for="nama_lengkap" class="form-label fw-bold">Nama Lengkap</label>
-                                <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" placeholder="Sesuai Ijazah" value="{{ old('nama_lengkap') }}" required>
+                                <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" placeholder="Sesuai Ijazah" value="{{ old('nama_lengkap', $data->nama_lengkap) }}" required>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="jenis_kelamin" class="form-label fw-bold">Jenis Kelamin</label>
-                                    <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
-                                        <option value="" selected disabled>-- Pilih Jenis Kelamin --</option>
-                                        <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                                        <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-6 mb-3">
-                                    <label for="agama" class="form-label fw-bold">Agama</label>
-                                    <select class="form-select" id="agama" name="agama" required>
-                                        <option value="" selected disabled>-- Pilih Agama --</option>
-                                        <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
-                                        <option value="Kristen Protestan" {{ old('agama') == 'Kristen Protestan' ? 'selected' : '' }}>Kristen Protestan</option>
-                                        <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
-                                        <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
-                                        <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
-                                        <option value="Khonghucu" {{ old('agama') == 'Khonghucu' ? 'selected' : '' }}>Khonghucu</option>
-                                    </select>
-                                </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="jenis_kelamin" class="form-label fw-bold">Jenis Kelamin</label>
+                                <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
+                                    <option value="" selected disabled>-- Pilih Jenis Kelamin --</option>
+                                    <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                </select>
                             </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="agama" class="form-label fw-bold">Agama</label>
+                                <select class="form-select" id="agama" name="agama" required>
+                                    <option value="" selected disabled>-- Pilih Agama --</option>
+                                    <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                                    <option value="Kristen Protestan" {{ old('agama') == 'Kristen Protestan' ? 'selected' : '' }}>Kristen Protestan</option>
+                                    <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                                    <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                    <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                                    <option value="Khonghucu" {{ old('agama') == 'Khonghucu' ? 'selected' : '' }}>Khonghucu</option>
+                                </select>
+                            </div>
+                        </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="tempat_lahir" class="form-label fw-bold">Tempat Lahir</label>
-                                    <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir') }}" required>
+                                    <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir', $data->tempat_lahir) }}" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="tanggal_lahir" class="form-label fw-bold">Tanggal Lahir</label>
-                                    <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required>
+                                    <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir',$data->tanggal_lahir) }}" required>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="email" class="form-label fw-bold">Alamat Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="nama@email.com" value="{{ old('email') }}" required>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="nama@email.com" value="{{ old('email', $data->email) }}" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="nomor_hp" class="form-label fw-bold">Nomor WhatsApp</label>
-                                    <input type="number" class="form-control" id="nomor_hp" name="nomor_hp" placeholder="08xxxxxxxxxx" value="{{ old('nomor_hp') }}" required>
+                                    <input type="number" class="form-control" id="nomor_hp" name="nomor_hp" placeholder="08xxxxxxxxxx" value="{{ old('nomor_hp', $data->nomor_hp) }}" required>
                                 </div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="alamat" class="form-label fw-bold">Alamat Lengkap</label>
-                                <textarea class="form-control" id="alamat" name="alamat" rows="3" required>{{ old('alamat') }}</textarea>
+                                <textarea class="form-control" id="alamat" name="alamat" rows="3" required>{{ old('alamat', $data->alamat) }}</textarea>
                             </div>
 
                             <hr class="my-4">
@@ -106,7 +107,7 @@
 
                             <div class="mb-3">
                                 <label for="asal_sekolah" class="form-label fw-bold">Asal Sekolah</label>
-                                <input type="text" class="form-control" id="asal_sekolah" name="asal_sekolah" placeholder="SMA/SMK/MA..." value="{{ old('asal_sekolah') }}" required>
+                                <input type="text" class="form-control" id="asal_sekolah" name="asal_sekolah" placeholder="SMA/SMK/MA..." value="{{ old('asal_sekolah', $data->asal_sekolah) }}" required>
                             </div>
 
                             <div class="mb-3">

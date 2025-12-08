@@ -13,7 +13,10 @@
 {{-- CEK STATUS PENDAFTARAN --}}
 @php
     // Mengecek apakah User ID ini sudah ada di tabel calon_mahasiswas
+   $camaba = \App\Models\Calon_Mahasiswa::where('user_id', Auth::id())->first();
     $sudahMendaftar = \App\Models\Calon_Mahasiswa::where('user_id', Auth::id())->exists();
+    // Ambil status (jika belum daftar, anggap null)
+    $statusPendaftaran = $camaba ? $camaba->status : null;
 @endphp
 
 <div class="d-flex">
@@ -44,9 +47,9 @@
                 @endif
             </li>
             
-            {{-- MODIFIKASI SIDEBAR PEMBAYARAN --}}
+           
             <li class="nav-item">
-                @if($sudahMendaftar)
+                @if($statusPendaftaran == 'tervalidasi')
                     <a class="nav-link nav-link-custom" href="{{ url('/pembayaran') }}">
                         <i class="fas fa-wallet me-2"></i> Pembayaran
                     </a>
@@ -57,16 +60,7 @@
                 @endif
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link nav-link-custom" href="{{ url('/') }}">
-                    <i class="fas fa-calendar-alt me-2"></i> Jadwal Tes
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-custom" href="{{ url('/bantuan') }}">
-                    <i class="fas fa-question-circle me-2"></i> Bantuan
-                </a>
-            </li>
+            
         </ul>
 
         <div class="px-3">
@@ -124,32 +118,7 @@
                         </div>
                     </div>
                         
-                    {{-- CARD STATUS PEMBAYARAN --}}
-                    <div class="card status-card mb-4">
-                        <div class="card-header card-header-custom bg-white">
-                            <i class="fas fa-receipt me-2 text-success"></i> Status Pembayaran Formulir
-                        </div>
-                        <div class="card-body d-flex align-items-center">
-                            <i class="fas fa-exclamation-circle status-icon text-danger"></i> 
-                            <div>
-                                <h5 class="card-title fw-bold text-danger">BELUM DIBAYAR</h5>
-                                <p class="card-text text-muted mb-0">Harap segera lunasi biaya pendaftaran untuk melanjutkan proses verifikasi.</p>
-                            </div>
-                        </div>
-                        
-                        {{-- MODIFIKASI TOMBOL CARD PEMBAYARAN --}}
-                        <div class="card-footer bg-light">
-                            @if($sudahMendaftar)
-                                <a href="{{ url('/pembayaran') }}" class="btn btn-success btn-sm">
-                                    <i class="fas fa-wallet me-2"></i> Lanjutkan Pembayaran (Rp 250.000)
-                                </a>
-                            @else
-                                <button class="btn btn-success btn-sm" onclick="alert('Daftar sebagai mahasiswa terlebih dahulu!');">
-                                    <i class="fas fa-wallet me-2"></i> Lanjutkan Pembayaran (Rp 250.000)
-                                </button>
-                            @endif
-                        </div>
-                    </div>
+                    
 
                     {{-- CARD LANGKAH TERAKHIR --}}
                     <div class="card status-card mb-4 shadow-sm border-0">

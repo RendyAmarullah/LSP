@@ -6,6 +6,7 @@ use App\Http\Controllers\Calon_MahasiswaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PendaftaranMahasiswaController;
 use App\Http\Controllers\PengumumanController;
@@ -40,7 +41,9 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 
 
 
-
+Route::get('/admin/pembayaran', [PembayaranController::class, 'index2'])->name('admin.pembayaran');
+Route::put('/admin/pembayaran/{id}', [PembayaranController::class, 'updateStatus'])->name('admin.pembayaran.update');
+    
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::put('/admin/validasi-user/{id}', [AdminController::class, 'validasiUser'])->name('admin.validasi');
     Route::put('/admin/tolak-user/{id}', [App\Http\Controllers\AdminController::class, 'tolakUser'])->name('admin.tolak');
@@ -48,15 +51,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
         return view('admin.create_announcement');
     })->name('admin.pengumuman.create');
     
-   
     
 });
 
 Route::middleware(['auth'])->group(function () {
     
-    // Ini menangani redirect '/admin/dashboard' tadi
+   
     Route::get('/admin/dashboard', function () {
-        // Ini memanggil file di resources/views/admin/dashboard.blade.php
         return view('admin.dashboard'); 
     });
 
@@ -64,23 +65,31 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/akun', [AdminController::class, 'index'])->name('users.index');
+
 });
 Route::middleware(['auth'])->prefix('admin')->group(function () {
-   
     Route::resource('pengumuman', PengumumanController::class);
 });
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [AuthController::class, 'statusAkun']); 
     Route::get('/admin/dashboard', [AuthController::class, 'pengumuman']);
+    Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
+    Route::post('/pembayaran', [PembayaranController::class, 'uploadBukti'])->name('pembayaran.upload');
+    
+    
      
     
     Route::get('/profile', [Calon_MahasiswaController::class, 'showProfil'])->name('profile');
 });
 
+Route::get('/pendaftaranmahasiswa/edit', [PendaftaranMahasiswaController::class, 'edit'])->name('pendaftaranmahasiswa.edit');
+Route::put('/pendaftaranmahasiswa/update', [PendaftaranMahasiswaController::class, 'update'])->name('pendaftaranmahasiswa.update');
 Route::get('/pendaftaranmahasiswa', [PendaftaranMahasiswaController::class, 'create'])->name('pendaftaranmahasiswa.create');
 Route::post('/pendaftaranmahasiswa', [PendaftaranMahasiswaController::class, 'store'])->name('pendaftaranmahasiswa.store');
 
 Route::get('/admin/calonmahasiswa', [Calon_MahasiswaController::class, 'index'])->name('admin.calonmahasiswa');
+Route::put('/admin/calonmahasiswa/{id}/update-status', [Calon_MahasiswaController::class, 'updateStatus'])
+    ->name('admin.calonmahasiswa.updateStatus');
 
  Route::get('/', [WelcomeController::class, 'index']);

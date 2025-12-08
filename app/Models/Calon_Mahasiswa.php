@@ -29,4 +29,10 @@ class Calon_Mahasiswa extends Model
         'status',
     ];
 
+    public function prodi()
+    {
+        // Menghubungkan kolom 'id_prodi' di tabel ini dengan tabel 'prodis'
+        return $this->belongsTo(Prodi::class, 'id_prodi', 'id');
+    }
+
 }

@@ -42,9 +42,9 @@
                     <i class="fas fa-users me-2"></i> Data Pendaftar
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-custom" href="{{ url('/bantuan') }}">
-                    <i class="fas fa-question-circle me-2"></i> Bantuan
+             <li class="nav-item">
+                <a class="nav-link nav-link-custom" href="{{ url('/admin/pembayaran') }}">
+                    <i class="fas fa-money-bill-wave me-2"></i> Pembayaran
                 </a>
             </li>
         </ul>
@@ -210,13 +210,50 @@
 
                 </div>
             </div>
-
-            {{-- Footer Modal --}}
-            <div class="modal-footer bg-light">
+            <div class="modal-footer bg-light justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-outline-primary"><i class="fas fa-print me-1"></i> Cetak Data</button>
-            </div>
 
+                
+                <div class="d-flex gap-2">
+                    
+                   
+                    @if($item->status == 'Menunggu verifikasi' || $item->status == 'pending')
+                        
+                        {{-- TOMBOL TOLAK --}}
+                        <form action="{{ route('admin.calonmahasiswa.updateStatus', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin MENOLAK calon mahasiswa ini?');">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="status" value="ditolak">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-times me-1"></i> Tolak
+                            </button>
+                        </form>
+
+                        {{-- TOMBOL TERIMA --}}
+                        <form action="{{ route('admin.calonmahasiswa.updateStatus', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin MENERIMA calon mahasiswa ini?');">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="status" value="tervalidasi">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check me-1"></i> Terima & Validasi
+                            </button>
+                        </form>
+
+                    @else
+                        {{-- Info jika sudah diproses --}}
+                        <span class="badge {{ $item->status == 'tervalidasi' ? 'bg-success' : 'bg-danger' }} p-2">
+                            Status: {{ ucfirst($item->status) }}
+                        </span>
+                    @endif
+
+                    {{-- Tombol Cetak --}}
+                    <button type="button" class="btn btn-outline-primary ms-2">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+
+            </div>
+            
         </div>
     </div>
 </div>

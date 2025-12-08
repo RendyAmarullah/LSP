@@ -10,22 +10,36 @@ class Calon_MahasiswaController extends Controller
 {
     public function index()
     {
-        // Ambil data terbaru, 10 per halaman
+       
         $pendaftar = Calon_Mahasiswa::orderBy('created_at', 'desc')->paginate(10);
 
         return view('admin.calonmahasiswa', compact('pendaftar'));
     }
         public function showProfil()
     {
-        // Ambil data calon mahasiswa berdasarkan email user yang sedang login
+       
         $userId = Auth::id();
         $data = Calon_Mahasiswa::where('user_id', $userId)->first();
-
-        // Jika data belum ada (belum mengisi form), bisa diarahkan ke form pendaftaran
         if(!$data) {
             return redirect('/pendaftaranmahasiswa')->with('warning', 'Silakan isi formulir pendaftaran terlebih dahulu.');
         }
 
         return view('profile', compact('data'));
+    }
+    public function updateStatus(Request $request, $id)
+    {
+        
+        $pendaftar = Calon_Mahasiswa::findOrFail($id);
+
+        
+        $request->validate([
+            'status' => 'required|in:tervalidasi,ditolak'
+        ]);
+
+        $pendaftar->status = $request->status;
+        $pendaftar->save();
+        $pesan = $request->status == 'tervalidasi' ? 'Mahasiswa berhasil diterima!' : 'Mahasiswa telah ditolak.';
+        
+        return redirect()->back()->with('success', $pesan);
     }
 }

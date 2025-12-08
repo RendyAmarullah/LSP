@@ -39,11 +39,11 @@
                         <i class="fas fa-users me-2"></i> Data Pendaftar
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-custom" href="{{ url('/bantuan') }}">
-                        <i class="fas fa-question-circle me-2"></i> Bantuan
-                    </a>
-                </li>
+                 <li class="nav-item">
+                <a class="nav-link nav-link-custom" href="{{ url('/admin/pembayaran') }}">
+                    <i class="fas fa-money-bill-wave me-2"></i> Pembayaran
+                </a>
+            </li>
             </ul>
     
             <div class="px-3">
