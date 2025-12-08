@@ -10,6 +10,7 @@ use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PendaftaranMahasiswaController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WelcomeController;
 use App\Models\Calon_Mahasiswa;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Route;
@@ -71,7 +72,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [AuthController::class, 'statusAkun']); 
-    Route::get('/admin/dashboard', [AuthController::class, 'pengumuman']); 
+    Route::get('/admin/dashboard', [AuthController::class, 'pengumuman']);
+     
+    
     Route::get('/profile', [Calon_MahasiswaController::class, 'showProfil'])->name('profile');
 });
 
@@ -80,3 +83,4 @@ Route::post('/pendaftaranmahasiswa', [PendaftaranMahasiswaController::class, 'st
 
 Route::get('/admin/calonmahasiswa', [Calon_MahasiswaController::class, 'index'])->name('admin.calonmahasiswa');
 
+ Route::get('/', [WelcomeController::class, 'index']);

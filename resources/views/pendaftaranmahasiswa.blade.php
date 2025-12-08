@@ -22,7 +22,6 @@
                     
                     <div class="card-body p-5">
 
-                        {{-- Menampilkan Pesan Sukses --}}
                         @if(session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
@@ -30,7 +29,6 @@
                             </div>
                         @endif
 
-                        {{-- Menampilkan Error Validasi --}}
                         @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul class="mb-0">
@@ -44,13 +42,36 @@
                         <form action="{{ route('pendaftaranmahasiswa.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             
+                            {{-- BAGIAN DATA PRIBADI (TIDAK BERUBAH) --}}
                             <h5 class="text-primary fw-bold mb-3"><i class="fas fa-user me-2"></i>Data Pribadi</h5>
                             
                             <div class="mb-3">
                                 <label for="nama_lengkap" class="form-label fw-bold">Nama Lengkap</label>
                                 <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" placeholder="Sesuai Ijazah" value="{{ old('nama_lengkap') }}" required>
                             </div>
-
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="jenis_kelamin" class="form-label fw-bold">Jenis Kelamin</label>
+                                    <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
+                                        <option value="" selected disabled>-- Pilih Jenis Kelamin --</option>
+                                        <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                        <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="agama" class="form-label fw-bold">Agama</label>
+                                    <select class="form-select" id="agama" name="agama" required>
+                                        <option value="" selected disabled>-- Pilih Agama --</option>
+                                        <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                                        <option value="Kristen Protestan" {{ old('agama') == 'Kristen Protestan' ? 'selected' : '' }}>Kristen Protestan</option>
+                                        <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                                        <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                        <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                                        <option value="Khonghucu" {{ old('agama') == 'Khonghucu' ? 'selected' : '' }}>Khonghucu</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="tempat_lahir" class="form-label fw-bold">Tempat Lahir</label>
@@ -80,6 +101,7 @@
 
                             <hr class="my-4">
 
+                            {{-- BAGIAN DATA AKADEMIK (PERUBAHAN DI SINI) --}}
                             <h5 class="text-primary fw-bold mb-3"><i class="fas fa-graduation-cap me-2"></i>Data Akademik</h5>
 
                             <div class="mb-3">
@@ -90,12 +112,21 @@
                             <div class="mb-3">
                                 <label for="jurusan_pilihan" class="form-label fw-bold">Pilihan Program Studi</label>
                                 <select class="form-select" id="jurusan_pilihan" name="jurusan_pilihan" required>
-                                    <option value="" selected disabled>-- Pilih Jurusan --</option>
-                                    <option value="Teknik Informatika" {{ old('jurusan_pilihan') == 'Teknik Informatika' ? 'selected' : '' }}>S1 Teknik Informatika</option>
-                                    <option value="Sistem Informasi" {{ old('jurusan_pilihan') == 'Sistem Informasi' ? 'selected' : '' }}>S1 Sistem Informasi</option>
-                                    <option value="Desain Komunikasi Visual" {{ old('jurusan_pilihan') == 'Desain Komunikasi Visual' ? 'selected' : '' }}>S1 Desain Komunikasi Visual</option>
-                                    <option value="Manajemen Bisnis" {{ old('jurusan_pilihan') == 'Manajemen Bisnis' ? 'selected' : '' }}>S1 Manajemen Bisnis</option>
+                                    <option value="" selected disabled>-- Pilih Program Studi --</option>
+                                    
+                                    {{-- LOOPING DATA DARI DATABASE --}}
+                                    @foreach($prodis as $fakultas => $listProdi)
+                                        <optgroup label="{{ $fakultas }}">
+                                            @foreach($listProdi as $prodi)
+                                                <option value="{{ $prodi->nama_prodi }}" {{ old('jurusan_pilihan') == $prodi->nama_prodi ? 'selected' : '' }}>
+                                                    {{ $prodi->jenjang }} - {{ $prodi->nama_prodi }}
+                                                </option>
+                                            @endforeach
+                                        </optgroup>
+                                    @endforeach
+
                                 </select>
+                                <div class="form-text">Pilih program studi sesuai minat dan bakat Anda.</div>
                             </div>
 
                             <hr class="my-4">

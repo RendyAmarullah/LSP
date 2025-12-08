@@ -13,15 +13,20 @@ class Calon_Mahasiswa extends Model
 
     protected $fillable = [
         'user_id',
+        'id_prodi',
         'nama_lengkap',
         'email',
         'nomor_hp',
+        'agama',
+        'jenis_kelamin',
         'tempat_lahir',
         'tanggal_lahir',
         'alamat',
         'asal_sekolah',
+        'fakultas',
         'jurusan_pilihan',
         'foto_diri',
+        'status',
     ];
 
 }

@@ -34,7 +34,7 @@
                         <a class="nav-link" href="#admission">Pendaftaran</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact">Kontak</a>
+                        <a class="nav-link" href="#contact">Pengumuman</a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-primary ms-lg-3" href="{{ url('/pendaftaran') }}">Daftar Sekarang <i class="fas fa-arrow-right ms-2"></i></a>
@@ -150,40 +150,53 @@
     </section>
 
     <section id="contact" class="py-5 bg-light">
+        
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <h2 class="display-5 fw-bold mb-4">Hubungi Kami</h2>
-                    <p>Punya pertanyaan? Jangan ragu untuk menghubungi tim admisi kami.</p>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-map-marker-alt text-primary me-2"></i> Jl. Inovasi No. 123, Kota Digital, Kode Pos 45678</li>
-                        <li><i class="fas fa-phone text-primary me-2"></i> (021) 123-4567</li>
-                        <li><i class="fas fa-envelope text-primary me-2"></i> info@techuni.ac.id</li>
-                    </ul>
-                    <div class="social-icons mt-4">
-                        <a href="#" class="text-dark me-3"><i class="fab fa-facebook-f fa-2x"></i></a>
-                        <a href="#" class="text-dark me-3"><i class="fab fa-twitter fa-2x"></i></a>
-                        <a href="#" class="text-dark me-3"><i class="fab fa-instagram fa-2x"></i></a>
-                        <a href="#" class="text-dark"><i class="fab fa-linkedin-in fa-2x"></i></a>
+               <div class="col-lg-8">
+                    
+                    <div class="d-flex align-items-center mb-3 mt-5">
+                        <h5 class="fw-bold text-secondary m-0">📢 Papan Pengumuman</h5>
+                        <span class="badge bg-primary ms-2">{{ $pengumuman->count() }} Baru</span>
                     </div>
-                </div>
-                <div class="col-lg-6">
-                    <h3 class="fw-bold mb-3">Kirim Pesan Kepada Kami</h3>
-                    <form>
-                        <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Nama Anda" required>
-                        </div>
-                        <div class="mb-3">
-                            <input type="email" class="form-control" placeholder="Email Anda" required>
-                        </div>
-                        <div class="mb-3">
-                            <textarea class="form-control" rows="4" placeholder="Pesan Anda" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Kirim Pesan</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+                    
+                    <div class="row">
+                        @forelse($pengumuman as $info)
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100 border-0 shadow-sm"> <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <h5 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 150px;" title="{{ $info->judul }}">
+                                                {{ $info->judul }}
+                                            </h5>
+                                            <small class="text-muted" style="font-size: 0.8rem;">
+                                                <i class="far fa-clock me-1"></i> {{ $info->created_at->format('d M') }}
+                                            </small>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="card-body d-flex flex-column">
+                                        @if($info->gambar)
+                                            <div class="mb-3">
+                                                <img src="{{ asset('storage/' . $info->gambar) }}" class="img-fluid rounded w-100" 
+                                                     alt="Gambar Pengumuman" style="height: 150px; object-fit: cover;">
+                                            </div>
+                                        @endif
+                                        
+                                        <p class="card-text text-secondary flex-grow-1">
+                                            {{ Str::limit($info->isi, 100) }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-12">
+                                <div class="alert alert-secondary d-flex align-items-center" role="alert">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <div>Belum ada pengumuman dari pihak kampus saat ini.</div>
+                                </div>
+                            </div>
+                        @endforelse
+                    </div>
     </section>
 
     <footer class="bg-dark text-white py-4">

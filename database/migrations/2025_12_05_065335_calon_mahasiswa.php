@@ -14,15 +14,20 @@ return new class extends Migration
         Schema::create('calon_mahasiswas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_prodi')->constrained('prodis')->onDelete('cascade');
             $table->string('nama_lengkap');
             $table->string('email')->unique();
             $table->string('nomor_hp');
+            $table->string('agama');
+            $table->string('jenis_kelamin');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->text('alamat');
             $table->string('asal_sekolah');
-            $table->string('jurusan_pilihan'); // Pilihan Jurusan
-            $table->string('foto_diri')->nullable(); // Path Gambar
+            $table->string('fakultas');
+            $table->string('jurusan_pilihan');
+            $table->string('foto_diri')->nullable();
+            $table->string('status')->default('Menunggu verifikasi');
             $table->timestamps();
         });
     }

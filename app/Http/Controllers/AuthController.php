@@ -43,15 +43,16 @@ class AuthController extends Controller
         });
         return redirect('/dashboard')->with('success', 'Registrasi berhasil! Silakan cek status akun Anda.');
     }
+
     public function statusAkun()
     {
-        // Ambil pengumuman terbaru
+        
         $user = Auth::user();
         $status= $user->status;
         
         $pengumuman = Pengumuman::latest()->get(); 
 
-        // Kirim variabel $pengumuman ke view dashboard
+        
         return view('dashboard', compact('pengumuman','status')); 
     }
 
