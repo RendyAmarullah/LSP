@@ -155,48 +155,88 @@
             <div class="row">
                <div class="col-lg-8">
                     
-                    <div class="d-flex align-items-center mb-3 mt-5">
-                        <h5 class="fw-bold text-secondary m-0">📢 Papan Pengumuman</h5>
-                        <span class="badge bg-primary ms-2">{{ $pengumuman->count() }} Baru</span>
-                    </div>
-                    
-                    <div class="row">
-                        @forelse($pengumuman as $info)
-                            <div class="col-md-6 mb-4">
-                                <div class="card h-100 border-0 shadow-sm"> <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <h5 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 150px;" title="{{ $info->judul }}">
-                                                {{ $info->judul }}
-                                            </h5>
-                                            <small class="text-muted" style="font-size: 0.8rem;">
-                                                <i class="far fa-clock me-1"></i> {{ $info->created_at->format('d M') }}
-                                            </small>
-                                        </div>
-                                    </div>
-                    
-                                    <div class="card-body d-flex flex-column">
-                                        @if($info->gambar)
-                                            <div class="mb-3">
-                                                <img src="{{ asset('storage/' . $info->gambar) }}" class="img-fluid rounded w-100" 
-                                                     alt="Gambar Pengumuman" style="height: 150px; object-fit: cover;">
-                                            </div>
-                                        @endif
-                                        
-                                        <p class="card-text text-secondary flex-grow-1">
-                                            {{ Str::limit($info->isi, 100) }}
-                                        </p>
-                                    </div>
+                     {{-- BAGIAN PENGUMUMAN --}}
+            <div class="d-flex align-items-center mb-3 mt-5">
+                <h5 class="fw-bold text-secondary m-0">📢 Papan Pengumuman</h5>
+                <span class="badge bg-primary ms-2">{{ $pengumuman->count() }} Baru</span>
+            </div>
+            
+            <div class="row">
+                @forelse($pengumuman as $info)
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 border-0 shadow-sm"> 
+                            <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <h5 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 150px;" title="{{ $info->judul }}">
+                                        {{ $info->judul }}
+                                    </h5>
+                                    <small class="text-muted" style="font-size: 0.8rem;">
+                                        <i class="far fa-clock me-1"></i> {{ $info->created_at->format('d M') }}
+                                    </small>
                                 </div>
                             </div>
-                        @empty
-                            <div class="col-12">
-                                <div class="alert alert-secondary d-flex align-items-center" role="alert">
-                                    <i class="fas fa-info-circle me-2"></i>
-                                    <div>Belum ada pengumuman dari pihak kampus saat ini.</div>
-                                </div>
+            
+                            <div class="card-body d-flex flex-column">
+                                @if($info->gambar)
+                                    <div class="mb-3">
+                                        <img src="{{ asset('storage/' . $info->gambar) }}" class="img-fluid rounded w-100" 
+                                             alt="Gambar Pengumuman" style="height: 150px; object-fit: cover;">
+                                    </div>
+                                @endif
+                                
+                                <p class="card-text text-secondary flex-grow-1">
+                                    {{ Str::limit($info->isi, 100) }}
+                                </p>
+
+                                <button type="button" class="btn btn-sm btn-outline-primary mt-3 stretched-link" 
+                                        data-bs-toggle="modal" data-bs-target="#pengumumanModal{{ $info->id }}">
+                                    Baca Selengkapnya <i class="fas fa-arrow-right ms-1"></i>
+                                </button>
                             </div>
-                        @endforelse
+                        </div>
                     </div>
+                @empty
+                    <div class="col-12">
+                        <div class="alert alert-secondary d-flex align-items-center" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <div>Belum ada pengumuman dari pihak kampus saat ini.</div>
+                        </div>
+                    </div>
+                @endforelse
+            </div>
+
+        </div>
+    </div>
+</div>
+{{-- MODAL DETAIL PENGUMUMAN --}}
+@foreach($pengumuman as $info)
+<div class="modal fade" id="pengumumanModal{{ $info->id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold text-dark w-100">
+                    {{ $info->judul }}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="mb-3 text-muted border-bottom pb-2">
+                    <i class="far fa-calendar-alt me-2"></i> Diposting pada: {{ $info->created_at->translatedFormat('l, d F Y') }}
+                </div>
+                @if($info->gambar)
+                    <div class="text-center mb-4">
+                        <img src="{{ asset('storage/' . $info->gambar) }}" class="img-fluid rounded shadow-sm" alt="Detail Gambar">
+                    </div>
+                @endif
+                <div class="text-dark" style="line-height: 1.8; white-space: pre-wrap;">{{ $info->isi }}</div>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
     </section>
 
     <footer class="bg-dark text-white py-4">

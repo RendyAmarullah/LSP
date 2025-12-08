@@ -7,14 +7,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}"> 
-   
-    </head>
-<body>
+</head>
+<body class="bg-light">
 
 <div class="d-flex">
     
+    {{-- SIDEBAR --}}
     <div class="sidebar col-lg-3">
-        
         <div class="sidebar-header">
             <i class="fas fa-graduation-cap university-icon mb-2" style="font-size: 2rem;"></i>
             <h4>Portal Admin</h4>
@@ -57,30 +56,97 @@
             </form>
         </div>
     </div>
+
+    {{-- KONTEN UTAMA --}}
     <div class="main-content col-lg-9 p-4">
         <div class="container-fluid">
             
-            <div class="welcome-header d-flex justify-content-between align-items-center">
+            <div class="welcome-header d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h1 class="display-5 fw-bold text-dark">Selamat Datang, {{ Auth::user()->name }}!</h1>
-                    
+                    <h1 class="display-6 fw-bold text-dark">Selamat Datang, Admin!</h1>
+                    <p class="text-muted">Ringkasan aktivitas pendaftaran mahasiswa baru.</p>
                 </div>
+            </div>
+
+            {{-- ================================================= --}}
+            {{-- KARTU STATISTIK (BAGIAN BARU)                     --}}
+            {{-- ================================================= --}}
+            <div class="row mb-4">
                 
+                {{-- Kartu 1: Total Akun Mahasiswa --}}
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm h-100 py-2 border-start border-primary border-5">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                                        <i class="fas fa-user-graduate text-primary fa-2x"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="card-title text-muted mb-1">Total Akun Mahasiswa</h6>
+                                    <h2 class="fw-bold mb-0 text-dark">{{ $totalAkun ?? 0 }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
+                {{-- Kartu 2: Total Pendaftar (Sudah Isi Form) --}}
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm h-100 py-2 border-start border-warning border-5">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
+                                        <i class="fas fa-file-alt text-warning fa-2x"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="card-title text-muted mb-1">Formulir Masuk</h6>
+                                    <h2 class="fw-bold mb-0 text-dark">{{ $totalPendaftar ?? 0 }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Kartu 3: Total Pembayaran Lunas --}}
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm h-100 py-2 border-start border-success border-5">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="bg-success bg-opacity-10 p-3 rounded-circle">
+                                        <i class="fas fa-wallet text-success fa-2x"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="card-title text-muted mb-1">Pembayaran Lunas</h6>
+                                    <h2 class="fw-bold mb-0 text-dark">{{ $totalPembayaran ?? 0 }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {{-- ================================================= --}}
+
+
             <div class="row">
-                
                 <div class="col-lg-8">
                     
-                    <div class="d-flex align-items-center mb-3 mt-5">
+                    <div class="d-flex align-items-center mb-3 mt-2">
                         <h5 class="fw-bold text-secondary m-0">📢 Papan Pengumuman</h5>
-                        <span class="badge bg-primary ms-2">{{ $pengumuman->count() }} Baru</span>
+                        <span class="badge bg-primary ms-2">{{ $pengumuman->count() }} Terposting</span>
                     </div>
                     
                     <div class="row">
                         @forelse($pengumuman as $info)
                             <div class="col-md-6 mb-4">
-                                <div class="card h-100 border-0 shadow-sm"> <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+                                <div class="card h-100 border-0 shadow-sm"> 
+                                    <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
                                         <div class="d-flex justify-content-between align-items-start">
                                             <h5 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 150px;" title="{{ $info->judul }}">
                                                 {{ $info->judul }}
@@ -115,25 +181,15 @@
                         @endforelse
                     </div>
 
-                    
-
-                </div> <div class="col-lg-4">
-                     <h5 class="mb-3 fw-bold text-secondary">Download & Info</h5>
-                    <div class="card status-card p-3">
-                        <h5 class="card-title text-center fw-bold mb-3">Dokumen & Informasi</h5>
-                        
-                        <a href="{{ url('/download-formulir') }}" class="btn btn-action btn-secondary mb-3">
-                            <i class="fas fa-download me-2"></i> Unduh Bukti Pendaftaran
-                        </a>
-                        
-                        <a href="{{ url('/') }}" class="btn btn-action btn-outline-dark">
-                            <i class="fas fa-home me-2"></i> Kembali ke Beranda
-                        </a>
-                    </div>
-                </div> </div>
+                </div> 
+                
+                <div class="col-lg-4">
+                    {{-- Kosong (Sesuai kode asli Anda) --}}
+                </div>
+            </div>
         </div>
     </div>
-    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

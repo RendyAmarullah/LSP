@@ -32,14 +32,14 @@ class PendaftaranMahasiswaController extends Controller
             'alamat' => 'required|string',
             'asal_sekolah' => 'required|string',
             'jurusan_pilihan' => 'required|string',
-            'foto_diri' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Max 2MB
+            'foto_diri' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             
         ]);
 
         // 2. Proses Upload Gambar
         $pathFoto = null;
         if ($request->hasFile('foto_diri')) {
-            // Simpan ke folder: storage/app/public/foto-maba
+           
             $pathFoto = $request->file('foto_diri')->store('foto-maba', 'public');
         }
 
@@ -128,7 +128,7 @@ public function update(Request $request)
         'id_prodi'     => $prodi->id,
         'fakultas'     => $prodi->fakultas,
         
-        // PENTING: Kembalikan status ke 'pending' agar admin cek ulang
+        
         'status'       => 'pending' 
     ]);
 

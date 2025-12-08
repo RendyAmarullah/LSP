@@ -58,9 +58,14 @@ class AuthController extends Controller
 
     public function pengumuman()
     {
-        $pengumuman = Pengumuman::latest()->get();
+        $pengumuman = \App\Models\Pengumuman::orderBy('created_at', 'desc')->paginate(5);
+    
+        // Hitung Jumlah Data
+        $totalAkun = \App\Models\User::where('role', 'mahasiswa')->count();
+        $totalPendaftar = \App\Models\Calon_Mahasiswa::count();
+        $totalPembayaran = \App\Models\Pembayaran::where('status', 'lunas')->count(); // Hitung yang lunas saja
 
-        return view('admin.dashboard', compact('pengumuman'));
+        return view('admin.dashboard', compact('pengumuman', 'totalAkun', 'totalPendaftar', 'totalPembayaran'));
     }
 
     public function showLoginForm()
@@ -76,13 +81,13 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // 2. Coba autentikasi
+    
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             
             $request->session()->regenerate();
             $user = Auth::user(); // Ambil data user yang sedang login
 
-            // 3. Cek Role & Redirect Sesuai Role
+            
             if ($user->role === 'admin') {
                 // Jika Admin, arahkan ke URL dashboard admin
                 return redirect()->intended('/admin/dashboard')->with('success', 'Selamat datang Admin!');
@@ -93,14 +98,14 @@ class AuthController extends Controller
                 return redirect()->intended('/dashboard')->with('success', 'Selamat datang Mahasiswa!');
             }
 
-            // Jika role tidak dikenali, paksa logout
+           
             Auth::logout();
             throw ValidationException::withMessages([
                 'email' => ['Akun Anda tidak memiliki hak akses yang valid.'],
             ]);
         }
 
-        // 4. Kembali ke form login dengan error jika password salah
+       
         throw ValidationException::withMessages([
             'email' => ['Email atau password yang Anda masukkan tidak valid.'],
         ]);

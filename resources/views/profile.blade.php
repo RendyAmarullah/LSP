@@ -10,6 +10,14 @@
     
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}"> 
 </head>
+
+@php
+    // Mengecek apakah User ID ini sudah ada di tabel calon_mahasiswas
+   $camaba = \App\Models\Calon_Mahasiswa::where('user_id', Auth::id())->first();
+    $sudahMendaftar = \App\Models\Calon_Mahasiswa::where('user_id', Auth::id())->exists();
+    // Ambil status (jika belum daftar, anggap null)
+    $statusPendaftaran = $camaba ? $camaba->status : null;
+@endphp
 <body class="bg-light">
 
 <div class="d-flex">
@@ -27,16 +35,21 @@
                     <i class="fas fa-chart-line me-2"></i> Dashboard
                 </a>
             </li>
-            {{-- Menu Aktif --}}
             <li class="nav-item">
                 <a class="nav-link nav-link-custom active" href="{{ url('/lengkapi-profil') }}">
                     <i class="fas fa-address-card me-2"></i> Data Profil
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-custom" href="{{ url('/pembayaran') }}">
-                    <i class="fas fa-wallet me-2"></i> Pembayaran
-                </a>
+                @if($statusPendaftaran == 'tervalidasi')
+                    <a class="nav-link nav-link-custom" href="{{ url('/pembayaran') }}">
+                        <i class="fas fa-wallet me-2"></i> Pembayaran
+                    </a>
+                @else
+                    <a class="nav-link nav-link-custom" href="#" onclick="alert('Daftar sebagai mahasiswa terlebih dahulu!'); return false;">
+                        <i class="fas fa-wallet me-2"></i> Pembayaran
+                    </a>
+                @endif
             </li>
         </ul>
 
@@ -50,7 +63,7 @@
         </div>
     </div>
 
-    {{-- KONTEN UTAMA --}}
+   
     <div class="main-content col-lg-9 p-4">
         <div class="container-fluid">
             
@@ -64,9 +77,7 @@
                 </a>
             </div>
 
-            {{-- ================================================= --}}
-            {{-- PEMBERITAHUAN STATUS (BAGIAN BARU)                --}}
-            {{-- ================================================= --}}
+           
             <div class="row mb-4">
                 <div class="col-12">
                     

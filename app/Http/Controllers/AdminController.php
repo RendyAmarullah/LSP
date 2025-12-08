@@ -12,8 +12,8 @@ class AdminController extends Controller
     {
        
         $users = User::where('role', 'mahasiswa')->paginate(10);
+        $pengumuman = \App\Models\Pengumuman::orderBy('created_at', 'desc')->paginate(5);
         
-
         return view('admin.akun', compact('users'));
     }
 

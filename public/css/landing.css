@@ -1,11 +1,11 @@
 /* General Body & Fonts */
 body {
-    background: url('https://i.pinimg.com/736x/8a/91/72/8a91724388cc059649ebf4985dfb50c2.jpg') no-repeat center center fixed;
+    background: url('../images/background.png') no-repeat center center fixed;
     font-family: 'Poppins', sans-serif;
      background-size: cover;
     color: #333;
     line-height: 1.6;
-    overflow-x: hidden; /* Mencegah scroll horizontal yang tidak diinginkan */
+    overflow-x: hidden; 
 }
 
 .overlay {
@@ -24,12 +24,12 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Navbar */
 .navbar {
-    background-color: #1a1a2e !important; /* Warna gelap bernuansa teknologi */
+    background-color: #1a1a2e !important; 
 }
 .navbar-brand {
     font-weight: 700;
     font-size: 1.5rem;
-    color: #00bcd4 !important; /* Warna aksen biru terang */
+    color: #00bcd4 !important;
 }
 .navbar-nav .nav-link {
     color: #c0c0c0 !important;
@@ -42,7 +42,7 @@ h1, h2, h3, h4, h5, h6 {
     border-color: rgba(255, 255, 255, 0.1);
 }
 .btn-primary {
-    background-color: #007bff; /* Biru standar Bootstrap */
+    background-color: #007bff;
     border-color: #007bff;
     font-weight: 600;
     transition: background-color 0.3s ease, border-color 0.3s ease;
@@ -66,10 +66,10 @@ h1, h2, h3, h4, h5, h6 {
     height: 100vh;
     color: #fff;
     position: relative;
-    padding-top: 56px; /* Offset for fixed navbar */
+    padding-top: 56px; 
 }
 .hero-section h1 {
-    font-size: 3.8rem; /* Lebih besar */
+    font-size: 3.8rem;
     letter-spacing: 1px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }

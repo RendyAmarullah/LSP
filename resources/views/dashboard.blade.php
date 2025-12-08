@@ -153,12 +153,8 @@
                 </div> 
                 
                 <div class="col-lg-4">
-                     <h5 class="mb-3 fw-bold text-secondary">Download & Info</h5>
-                    <div class="card status-card p-3">
-                        <h5 class="card-title text-center fw-bold mb-3">Dokumen & Informasi</h5>
-                        <a href="{{ url('/download-formulir') }}" class="btn btn-action btn-secondary mb-3">
-                            <i class="fas fa-download me-2"></i> Unduh Bukti Pendaftaran
-                        </a>
+                     <h5 class="mb-3 fw-bold text-secondary"></h5>
+                    
                         <a href="{{ url('/') }}" class="btn btn-action btn-outline-dark">
                             <i class="fas fa-home me-2"></i> Kembali ke Beranda
                         </a>

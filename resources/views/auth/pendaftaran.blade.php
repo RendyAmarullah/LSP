@@ -41,15 +41,12 @@
                 </span>
             </div>
 
-            <div class="mb-3">
-                <input type="password" name="password_confirmation" class="form-control" placeholder="Ulangi Password" required>
-            </div>
-
-            <div class="mb-4 form-check text-center">
-                <input type="checkbox" class="form-check-input" id="terms" required>
-                <label class="form-check-label" for="terms">
-                    Saya setuju dengan <a href="#" class="terms-link">Syarat dan Ketentuan</a>
-                </label>
+            <div class="mb-3 input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Ulangi Password" required>
+                <span class="input-group-text toggle-password" onclick="togglePassword('password_confirmation')" style="cursor: pointer;">
+                    <i id="eye-icon-password_confirmation" class="fas fa-eye-slash"></i>
+                </span>
             </div>
 
             <button type="submit" class="btn btn-primary w-100 btn-signup">DAFTAR</button>

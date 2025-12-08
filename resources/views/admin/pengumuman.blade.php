@@ -61,7 +61,7 @@
             <div class="alert alert-success mb-3">{{ session('success') }}</div>
         @endif
         
-        {{-- BAGIAN 1: TABEL PENGUMUMAN (Tampil jika page = 'index') --}}
+        {{-- BAGIAN 1: TABEL PENGUMUMAN--}}
         @if($page == 'index')
             <div class="d-flex justify-content-between mb-4">
                 <h3>📢 Kelola Pengumuman</h3>
@@ -132,7 +132,7 @@
                 </div>
             </div>
 
-        {{-- BAGIAN 3: FORM EDIT (Tampil jika page = 'edit') --}}
+        {{-- BAGIAN 3: FORM EDIT--}}
         @elseif($page == 'edit')
             <div class="card shadow-sm">
                 <div class="card-header bg-warning text-dark">Edit Pengumuman</div>
@@ -140,7 +140,7 @@
                     <form action="{{ route('pengumuman.update', $pengumuman->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf @method('PUT')
                         
-                        {{-- Field Gambar Khusus Edit (Preview gambar lama) --}}
+                        {{-- Field Gambar Khusus Edit--}}
                         <div class="mb-3">
                             <label class="form-label">Gambar Saat Ini</label><br>
                             @if($pengumuman->gambar)
