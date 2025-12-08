@@ -72,9 +72,7 @@
                     <h1 class="display-6 fw-bold text-dark">Profil Saya</h1>
                     <p class="text-muted">Berikut adalah data diri yang telah Anda daftarkan.</p>
                 </div>
-                <a href="{{ url('/dashboard') }}" class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left me-2"></i> Kembali
-                </a>
+                
             </div>
 
            

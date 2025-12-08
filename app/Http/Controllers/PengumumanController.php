@@ -29,7 +29,7 @@ class PengumumanController extends Controller
         $request->validate([
             'judul' => 'required',
             'isi' => 'required',
-            'gambar' => 'image|mimes:jpeg,png,jpg|max:2048'
+            'gambar' => 'image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
         $gambarPath = null;
@@ -66,7 +66,7 @@ class PengumumanController extends Controller
         $request->validate([
             'judul' => 'required',
             'isi' => 'required',
-            'gambar' => 'image|mimes:jpeg,png,jpg|max:2048'
+            'gambar' => 'image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
         $data = [
@@ -100,7 +100,7 @@ class PengumumanController extends Controller
         }
 
         $pengumuman->delete();
-        return redirect()->route('admin.pengumuman')->with('success', 'Pengumuman dihapus');
+        return redirect()->route('pengumuman.index')->with('success', 'Pengumuman dihapus');
     }
 
       

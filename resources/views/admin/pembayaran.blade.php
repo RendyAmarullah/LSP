@@ -179,85 +179,81 @@
                         @endif
                     </div>
 
-                    {{-- KOLOM KANAN: FORM VALIDASI --}}
+                   {{-- KOLOM KANAN: FORM VALIDASI --}}
                    <div class="col-md-5 p-4">
-                        <h6 class="fw-bold border-bottom pb-2 mb-3">Info Transaksi</h6>
-                        
-                        {{-- 1. Nama Pengirim --}}
-                        <div class="mb-2">
-                            <small class="text-muted d-block">Pengirim:</small>
-                            <span class="fw-bold">{{ $trx->calonMahasiswa->nama_lengkap ?? 'Data Terhapus' }}</span>
-                        </div>
-
-                        {{-- 2. (BARU) Detail Prodi & Fakultas --}}
-                        <div class="mb-2">
-                            <small class="text-muted d-block">Program Studi:</small>
-                            <div class="fw-bold text-dark">
-                                {{ $trx->calonMahasiswa->prodi->nama_prodi ?? '-' }} 
-                                <span class="badge bg-light text-secondary border ms-1">
-                                    {{ $trx->calonMahasiswa->prodi->jenjang ?? '' }}
-                                </span>
-                            </div>
-                            <small class="text-secondary" style="font-size: 0.8rem;">
-                                {{ $trx->calonMahasiswa->prodi->fakultas ?? '-' }}
-                            </small>
-                        </div>
-
-                        {{-- 3. Nominal Pembayaran --}}
-                        <div class="mb-2">
-                            <small class="text-muted d-block">Nominal Tagihan:</small>
-                            <span class="fw-bold text-success fs-5">
-                                Rp {{ number_format($trx->jumlah_bayar, 0, ',', '.') }}
-                            </span>
-                        </div>
-
-                        {{-- 4. Metode & Tanggal --}}
-                        <div class="mb-4">
-                            <small class="text-muted d-block">Metode & Waktu:</small>
-                            <span>{{ $trx->metode_pembayaran }}</span> <br>
-                            <small class="text-muted">{{ \Carbon\Carbon::parse($trx->tanggal)->format('d M Y, H:i') }} WIB</small>
-                        </div>
-
-                        <hr>
-
-                        {{-- LOGIKA TOMBOL AKSI (Tetap Sama) --}}
-                        @if($trx->status == 'pending')
-                            
-                            <form action="{{ route('admin.pembayaran.update', $trx->id) }}" method="POST" class="mb-2" onsubmit="return confirm('Verifikasi pembayaran ini sebagai LUNAS?')">
-                                @csrf @method('PUT')
-                                <input type="hidden" name="status" value="lunas">
-                                <button type="submit" class="btn btn-success w-100 fw-bold py-2">
-                                    <i class="fas fa-check-circle me-2"></i> Verifikasi Lunas
-                                </button>
-                            </form>
-
-                            <button class="btn btn-outline-danger w-100 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#formTolak{{ $trx->id }}">
-                                <i class="fas fa-times-circle me-2"></i> Tolak Pembayaran
-                            </button>
-
-                            <div class="collapse mt-3" id="formTolak{{ $trx->id }}">
-                                <div class="card card-body bg-light border-0">
-                                    <form action="{{ route('admin.pembayaran.update', $trx->id) }}" method="POST">
-                                        @csrf @method('PUT')
-                                        <input type="hidden" name="status" value="ditolak">
-                                        <label class="small fw-bold mb-1">Alasan Penolakan:</label>
-                                        <textarea name="keterangan_admin" class="form-control mb-2" rows="2" placeholder="Contoh: Bukti buram / Nominal salah" required></textarea>
-                                        <button type="submit" class="btn btn-danger btn-sm w-100">Kirim Penolakan</button>
-                                    </form>
-                                </div>
-                            </div>
-
-                        @else
-                            <div class="alert {{ $trx->status == 'lunas' ? 'alert-success' : 'alert-danger' }} text-center">
-                                Status: <strong>{{ strtoupper($trx->status) }}</strong>
-                                @if($trx->status == 'ditolak')
-                                    <br><small class="fst-italic">"{{ $trx->keterangan_admin }}"</small>
-                                @endif
-                            </div>
-                            <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Tutup</button>
-                        @endif
-
+                    <h6 class="fw-bold border-bottom pb-2 mb-3">Info Transaksi</h6>
+                    
+                    {{-- (Info Transaksi di atas tetap sama...) --}}
+                    <div class="mb-2">
+                        <small class="text-muted d-block">Pengirim:</small>
+                        <span class="fw-bold">{{ $trx->calonMahasiswa->nama_lengkap ?? 'Data Terhapus' }}</span>
                     </div>
+                    <div class="mb-2">
+                        <small class="text-muted d-block">Program Studi:</small>
+                        <div class="fw-bold text-dark">
+                            {{ $trx->calonMahasiswa->prodi->nama_prodi ?? '-' }} 
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <small class="text-muted d-block">Nominal Tagihan:</small>
+                        <span class="fw-bold text-success fs-5">
+                            Rp {{ number_format($trx->jumlah_bayar, 0, ',', '.') }}
+                        </span>
+                    </div>
+                    <div class="mb-4">
+                        <small class="text-muted d-block">Status Saat Ini:</small>
+                        @if($trx->status == 'lunas')
+                            <span class="badge bg-success w-100 py-2">LUNAS</span>
+                        @elseif($trx->status == 'ditolak')
+                            <span class="badge bg-danger w-100 py-2">DITOLAK</span>
+                        @else
+                            <span class="badge bg-warning text-dark w-100 py-2">PENDING</span>
+                        @endif
+                    </div>
+
+                    <hr>
+
+                    {{-- LOGIKA TOMBOL AKSI (DIUBAH AGAR SELALU MUNCUL) --}}
+                    
+                    {{-- 1. TOMBOL SET LUNAS (Muncul jika status BUKAN Lunas) --}}
+                    @if($trx->status != 'lunas')
+                        <form action="{{ route('admin.pembayaran.update', $trx->id) }}" method="POST" class="mb-2" onsubmit="return confirm('Verifikasi pembayaran ini sebagai LUNAS?')">
+                            @csrf @method('PUT')
+                            <input type="hidden" name="status" value="lunas">
+                            <button type="submit" class="btn btn-success w-100 fw-bold py-2">
+                                <i class="fas fa-check-circle me-2"></i> Set Status LUNAS
+                            </button>
+                        </form>
+                    @endif
+
+                    {{-- 2. TOMBOL TOLAK/BATALKAN (Muncul jika status BUKAN Ditolak) --}}
+                    @if($trx->status != 'ditolak')
+                        <button class="btn btn-outline-danger w-100 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#formTolak{{ $trx->id }}">
+                            <i class="fas fa-times-circle me-2"></i> 
+                            {{ $trx->status == 'lunas' ? 'Batalkan / Tolak' : 'Tolak Pembayaran' }}
+                        </button>
+
+                        <div class="collapse mt-3" id="formTolak{{ $trx->id }}">
+                            <div class="card card-body bg-light border-0">
+                                <form action="{{ route('admin.pembayaran.update', $trx->id) }}" method="POST">
+                                    @csrf @method('PUT')
+                                    <input type="hidden" name="status" value="ditolak">
+                                    
+                                    <label class="small fw-bold mb-1">Alasan Penolakan / Pembatalan:</label>
+                                    <textarea name="keterangan_admin" class="form-control mb-2" rows="2" placeholder="Contoh: Bukti salah / Salah transfer" required></textarea>
+                                    
+                                    <button type="submit" class="btn btn-danger btn-sm w-100">
+                                        Konfirmasi Penolakan
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- 3. TOMBOL TUTUP --}}
+                    <button type="button" class="btn btn-secondary w-100 mt-3" data-bs-dismiss="modal">Tutup</button>
+
+                </div>
 
                         <hr>
 

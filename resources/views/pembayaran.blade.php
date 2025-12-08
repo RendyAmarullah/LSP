@@ -79,7 +79,11 @@
                                 <h1 class="fw-bold text-primary display-5">
                                     Rp {{ number_format($data->prodi->biaya_kuliah, 0, ',', '.') }}
                                 </h1>
+                                @if($pembayaran && $pembayaran->status == 'lunas')
+                                <span class="badge bg-success text-dark px-3 py-2 mt-2">Pembayaran Selesai</span>
+                                @elseif($pembayaran && $pembayaran->status == 'pending')
                                 <span class="badge bg-warning text-dark px-3 py-2 mt-2">Menunggu Pembayaran</span>
+                                @endif
                             </div>
 
                             <hr>
