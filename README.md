@@ -19,6 +19,8 @@ Validasi Pembayaran: Memeriksa bukti transfer, mengubah status menjadi Lunas ata
 Manajemen Pengumuman: CRUD (Create, Read, Update, Delete) pengumuman kampus.
 Data Master: Manajemen akun dan data lainnya.
 
+supri perkedel
+
 Dependensi:
 1. Backend 
 - PHP versi >= 8.1
